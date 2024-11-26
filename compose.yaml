@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root123@
+      POSTGRES_DB: ride_wise
+    ports:
+      - "5432:5432"
+    networks:
+      - rise-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      NODE_ENV: production
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_USER: root
+      PG_PASSWORD: root123@
+      PG_DB_NAME: ride_wise
+      HOST: 0.0.0.0
+      PORT: 3333
+      APP_KEY: Xkl5IMqI2v9pLIb7HWRL7lzyRhjo15vD
+      DRIVE_DISK: local
+      API_GOOGLE: AIzaSyDOKFPvX5Idp1D6SgPrOME-Jh8RwSMzCBs
+    ports:
+      - "8080:3333"
+    depends_on:
+      - db
+    networks:
+      - rise-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - rise-network
+
+networks:
+  rise-network:
+    driver: bridge
