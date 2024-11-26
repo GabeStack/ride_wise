@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+
+Route.post('ride/estimate', 'RidesController.estimate');
+Route.post('ride/confirm', 'RidesController.confirm')
+Route.get('/ride/:customer_id', 'RidesController.show')
