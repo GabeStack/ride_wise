@@ -7,8 +7,8 @@ export default class Reviews extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('driver_id').unsigned().references('id').inTable('drivers').onDelete('CASCADE') // FK para Driver
-      table.integer('rating').notNullable() // Nota do review
-      table.string('comment').notNullable() // Comentário do review
+      table.integer('rating').notNullable() 
+      table.string('comment').notNullable() 
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })

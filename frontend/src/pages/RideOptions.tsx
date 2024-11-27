@@ -3,8 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngExpression, Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ErrorAlert from '../components/errorAlert';
-import { useRequestRideStore } from '../hooks/useRequestRideStore'; // Alterado para importar a store correta
-import { useRideOptionsStore } from '../hooks/useRideOptionsStore'; // Alterado para importar a store correta
+import { useRequestRideStore } from '../hooks/useRequestRideStore';
+import { useRideOptionsStore } from '../hooks/useRideOptionsStore';
 import axios from 'axios';
 
 const RideOptions: React.FC = () => {
@@ -16,19 +16,18 @@ const RideOptions: React.FC = () => {
 
     const originIcon = new Icon({
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png', // Caminho do ícone padrão do Leaflet
-        iconSize: [25, 41], // Tamanho do ícone padrão
-        iconAnchor: [12, 41], // Posição do ícone
-        popupAnchor: [1, -34], // Posição do popup
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
     });
 
     const destinationIcon = new Icon({
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png', // Caminho do ícone padrão do Leaflet
-        iconSize: [25, 41], // Tamanho do ícone padrão
-        iconAnchor: [12, 41], // Posição do ícone
-        popupAnchor: [1, -34], // Posição do popup
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
     });
 
-    // Função para confirmar a viagem
     const confirmRide = async (driverId: number) => {
         try {
             const selectedDriver = options.find(driver => driver.id === driverId);
@@ -40,8 +39,8 @@ const RideOptions: React.FC = () => {
 
             const rideData = {
                 customer_id: customerId,
-                origin: originInput, // Enviar o endereço como string
-                destination: destinationInput, // Enviar o endereço como string
+                origin: originInput,
+                destination: destinationInput,
                 distance,
                 duration,
                 driver: {
@@ -68,19 +67,15 @@ const RideOptions: React.FC = () => {
             {/* Mapa com Leaflet */}
             <div className="w-full max-w-4xl mb-6">
                 <MapContainer
-                    center={originCoords} // Usando o tipo LatLngExpression
+                    center={originCoords}
                     zoom={13}
                     scrollWheelZoom={false}
                     style={{ height: '400px', width: '100%' }}
                 >
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                    {/* Marcador para Origem */}
                     <Marker position={originCoords} icon={originIcon}>
                         <Popup>Origem</Popup>
                     </Marker>
-
-                    {/* Marcador para Destino */}
                     <Marker position={destinationCoords} icon={destinationIcon}>
                         <Popup>Destino</Popup>
                     </Marker>

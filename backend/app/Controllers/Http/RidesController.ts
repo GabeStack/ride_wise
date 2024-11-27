@@ -28,7 +28,6 @@ export default class RidesController {
     const googleMapsUrl = `https://routes.googleapis.com/directions/v2:computeRoutes`
 
     try {
-      // Fazendo a chamada para a API do Google Maps
       const { data: routeData } = await axios.post(
         googleMapsUrl,
         {
@@ -46,7 +45,6 @@ export default class RidesController {
         }
       )
 
-      // Verificar se a rota foi calculada corretamente
       if (!routeData.routes || routeData.routes.length === 0) {
         return response.status(400).json({
           error_code: 'INVALID_DATA',
@@ -54,26 +52,21 @@ export default class RidesController {
         })
       }
 
-      // Extrair dados necessários da resposta da API
       const route = routeData.routes[0]
       const leg = route.legs[0]
-      const distance = route.distanceMeters / 1000 // Convertendo para quilômetros
+      const distance = route.distanceMeters / 1000
       const duration = route.duration
 
-      // Extrair latitude e longitude do ponto de partida e destino
       const originLocation = leg.startLocation.latLng
       const destinationLocation = leg.endLocation.latLng
-
-      // Buscar motoristas no banco de dados e seus reviews
       const drivers = await Driver.query().preload('reviews')
 
-      // Filtrar motoristas disponíveis com base na distância calculada
       const availableDrivers = drivers
         .filter((driver) => distance >= driver.minKm)
         .map((driver) => {
           const driverReview = driver.reviews.reduce(
             (acc, review) => acc + review.rating, 0
-          ) / driver.reviews.length; // Calculando a média das avaliações
+          ) / driver.reviews.length;
 
           return {
             id: driver.id,
@@ -81,15 +74,14 @@ export default class RidesController {
             description: driver.description,
             vehicle: driver.vehicle,
             review: {
-              rating: driverReview, // Média das avaliações
-              comment: driver.reviews.map((r) => r.comment).join(', '), // Junta os comentários dos reviews
+              rating: driverReview,
+              comment: driver.reviews.map((r) => r.comment).join(', '),
             },
-            value: parseFloat((driver.ratePerKm * distance).toFixed(2)), // Calculando o valor total da corrida
+            value: parseFloat((driver.ratePerKm * distance).toFixed(2)),
           }
         })
-        .sort((a, b) => a.value - b.value) // Ordenar pelo valor da viagem
+        .sort((a, b) => a.value - b.value)
 
-      // Retornar a resposta com os dados calculados e motoristas disponíveis
       return response.status(200).json({
         origin: {
           latitude: originLocation.latitude,
@@ -102,7 +94,7 @@ export default class RidesController {
         distance,
         duration,
         options: availableDrivers,
-        routeResponse: routeData, // Retorna a resposta original da rota
+        routeResponse: routeData,
       })
     } catch (error) {
       console.error(error.response?.data || error.message)
@@ -115,14 +107,12 @@ export default class RidesController {
 
 
   public async confirm({ request, response }: HttpContextContract) {
-    // Validação do corpo da requisição
     const data = await validator.validate({
       schema: ConfirmValidator.schema,
       data: request.all(),
       messages: ConfirmValidator.messages,
     });
 
-    // Verificar se os endereços de origem e destino são diferentes
     if (data.origin === data.destination) {
       return response.status(400).json({
         error_code: "INVALID_DATA",
@@ -130,17 +120,8 @@ export default class RidesController {
       });
     }
 
-    // Tabela de motoristas (substituir por dados reais do banco se necessário)
-    const drivers = [
-      { id: 1, name: "Homer Simpson", minKm: 1 },
-      { id: 2, name: "Dominic Toretto", minKm: 5 },
-      { id: 3, name: "James Bond", minKm: 10 },
-    ];
+    const selectedDriver = await Driver.find(data.driver.id);
 
-    // Validar se o motorista informado é válido
-    const selectedDriver = drivers.find(
-      (driver) => driver.id === data.driver.id
-    );
     if (!selectedDriver) {
       return response.status(404).json({
         error_code: "DRIVER_NOT_FOUND",
@@ -148,7 +129,6 @@ export default class RidesController {
       });
     }
 
-    // Validar se a quilometragem é válida para o motorista
     if (data.distance < selectedDriver.minKm) {
       return response.status(406).json({
         error_code: "INVALID_DISTANCE",
@@ -157,7 +137,6 @@ export default class RidesController {
     }
 
     try {
-      // Salvar a viagem no banco de dados
       const ride = new Ride();
       ride.customer_id = data.customer_id;
       ride.origin = data.origin;
@@ -168,9 +147,8 @@ export default class RidesController {
       ride.driver_name = data.driver.name;
       ride.value = data.value;
 
-      await ride.save(); // Salva a viagem no banco de dados
+      await ride.save();
 
-      // Retornar sucesso
       return response.status(200).json({ success: true });
     } catch (error) {
       console.error(error);
@@ -185,7 +163,6 @@ export default class RidesController {
     const customerId = params.customer_id
     const driverId = request.qs().driver_id
 
-    // Validação: O ID do cliente não pode estar em branco
     if (!customerId) {
       return response.status(400).json({
         error_code: 'INVALID_DATA',
@@ -193,7 +170,6 @@ export default class RidesController {
       })
     }
 
-    // Validação: Se o driver_id foi fornecido, ele precisa ser válido
     if (driverId) {
       const driverExists = await Driver.find(driverId)
       if (!driverExists) {
@@ -205,17 +181,14 @@ export default class RidesController {
     }
 
     try {
-      // Consultar as viagens realizadas pelo cliente
       const query = Ride.query().where('customer_id', customerId).orderBy('created_at', 'desc')
 
-      // Se driver_id foi informado, filtrar as viagens pelo motorista
       if (driverId) {
         query.where('driver_id', driverId)
       }
 
       const rides = await query
 
-      // Verificar se existem viagens
       if (rides.length === 0) {
         return response.status(404).json({
           error_code: 'NO_RIDES_FOUND',
@@ -223,7 +196,6 @@ export default class RidesController {
         })
       }
 
-      // Formatar a resposta
       const formattedRides = rides.map((ride) => ({
         id: ride.id,
         date: ride.createdAt,
@@ -238,7 +210,6 @@ export default class RidesController {
         value: ride.value,
       }))
 
-      // Retornar as viagens encontradas
       return response.status(200).json({
         customer_id: customerId,
         rides: formattedRides,

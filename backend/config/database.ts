@@ -2,7 +2,7 @@ import Env from '@ioc:Adonis/Core/Env'
 import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
 const databaseConfig: DatabaseConfig = {
-  connection: Env.get('DB_CONNECTION', 'pg'), // Defina o padrão como 'pg' caso a variável não esteja configurada
+  connection: Env.get('DB_CONNECTION', 'pg'),
 
   connections: {
     pg: {

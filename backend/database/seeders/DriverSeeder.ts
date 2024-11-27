@@ -29,7 +29,6 @@ export default class DriverSeeder extends BaseSeeder {
       },
     ])
 
-    // Criar reviews para os motoristas
     await Review.createMany([
       {
         driver_id: drivers[0].id,

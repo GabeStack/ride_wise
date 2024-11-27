@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.string('description').notNullable()
       table.string('vehicle').notNullable()
       table.float('rate_per_km').notNullable().defaultTo(0) 
-      table.integer('min_km').notNullable()// Certifique-se de que esta linha existe
+      table.integer('min_km').notNullable()
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })

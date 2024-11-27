@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useRequestRideStore } from '../hooks/useRequestRideStore';
-import { useRideOptionsStore } from '../hooks/useRideOptionsStore'; // Novo hook importado
+import { useRideOptionsStore } from '../hooks/useRideOptionsStore';
 import ErrorAlert from '../components/errorAlert';
 import axios from 'axios';
 
@@ -10,15 +10,14 @@ const RequestRide: React.FC = () => {
   const [originInput, setOriginInput] = useState('');
   const [destinationInput, setDestinationInput] = useState('');
   const [error, setError] = useState('');
-  const { setRequestRideDetails } = useRequestRideStore(); // Usando o hook para setar os dados
-  const { setRideDetails, setOptions } = useRideOptionsStore(); // Usando o hook da RideOptionsStore
+  const { setRequestRideDetails } = useRequestRideStore();
+  const { setRideDetails, setOptions } = useRideOptionsStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // Fazer a requisição para estimativa
       const response = await axios.post('http://localhost:8080/ride/estimate', {
         customer_id: customerId,
         origin: originInput,
@@ -26,23 +25,16 @@ const RequestRide: React.FC = () => {
       });
 
       const { origin, destination, options, distance, duration } = response.data;
-      console.log(response.data); // Verificar a resposta
-
-      // Atualiza o estado da RequestRideStore com os endereços
+      console.log(response.data);
       setRequestRideDetails(customerId, originInput, destinationInput);
-
-      // Atualiza o estado da RideOptionsStore com as coordenadas e outras informações
       setRideDetails(
-        { latitude: origin.latitude, longitude: origin.longitude }, // Coordenadas de origem
-        { latitude: destination.latitude, longitude: destination.longitude }, // Coordenadas de destino
+        { latitude: origin.latitude, longitude: origin.longitude },
+        { latitude: destination.latitude, longitude: destination.longitude },
         distance,
         duration
       );
 
-      // Atualiza as opções de motoristas
       setOptions(options);
-
-      // Navegar para a tela de opções
       navigate('/options');
     } catch (error) {
       console.error('Erro ao solicitar estimativa:', error);
@@ -52,7 +44,7 @@ const RequestRide: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <ErrorAlert message={error} onClose={() => setError('')} /> {/* Exibindo erros */}
+        <ErrorAlert message={error} onClose={() => setError('')} />
       <h1 className="text-2xl font-bold mb-4">Solicitar Viagem</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-md">
         <div className="mb-4">

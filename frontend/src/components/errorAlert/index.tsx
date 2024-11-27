@@ -6,7 +6,7 @@ interface ErrorAlertProps {
 }
 
 const ErrorAlert: React.FC<ErrorAlertProps> = ({ message, onClose }) => {
-  if (!message) return null; // Não exibir se não houver mensagem
+  if (!message) return null;
 
   return (
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded shadow-md z-50">

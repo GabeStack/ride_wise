@@ -18,11 +18,11 @@ interface Coordinates {
 }
 
 interface RideOptionsState {
-  origin: Coordinates; // Coordenadas de origem
-  destination: Coordinates; // Coordenadas de destino
-  distance: number; // Distância da viagem
-  duration: string; // Duração da viagem
-  options: DriverOption[]; // Opções de motoristas
+  origin: Coordinates;
+  destination: Coordinates;
+  distance: number;
+  duration: string; 
+  options: DriverOption[]; 
 
   setRideDetails: (origin: Coordinates, destination: Coordinates, distance: number, duration: string) => void;
   setOptions: (options: DriverOption[]) => void;

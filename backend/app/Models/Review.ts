@@ -12,11 +12,9 @@ export default class Review extends BaseModel {
   @column()
   public comment: string
 
-  // Chave estrangeira para o modelo Driver
   @column()
   public driver_id: number
 
-  // Relacionamento com Driver
   @belongsTo(() => Driver)
   public driver: BelongsTo<typeof Driver>
 

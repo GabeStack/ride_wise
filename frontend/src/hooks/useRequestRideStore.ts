@@ -2,15 +2,15 @@ import { create } from 'zustand';
 
 interface RequestRideState {
   customerId: string;
-  originInput: string; // Endereço de origem
-  destinationInput: string; // Endereço de destino
+  originInput: string;
+  destinationInput: string;
   setRequestRideDetails: (customerId: string, originInput: string, destinationInput: string) => void;
 }
 
 export const useRequestRideStore = create<RequestRideState>((set) => ({
-  customerId: '', // Inicializa com um valor vazio
-  originInput: '', // Inicializa com valor vazio
-  destinationInput: '', // Inicializa com valor vazio
+  customerId: '', 
+  originInput: '',
+  destinationInput: '',
   
   setRequestRideDetails: (customerId, originInput, destinationInput) =>
     set({ customerId, originInput, destinationInput }),

@@ -21,9 +21,8 @@ export default class Driver extends BaseModel {
   @column({ columnName: 'min_km' })
   public minKm: number
 
-  // Relacionamento com Review (hasMany)
   @hasMany(() => Review, {
-    foreignKey: 'driver_id', // Chave estrangeira usada no modelo Review
+    foreignKey: 'driver_id', 
   })
   public reviews: HasMany<typeof Review>
 

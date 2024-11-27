@@ -11,7 +11,7 @@ interface Driver {
 interface Ride {
   id: number;
   date: string;
-  driver: Driver; // Atualizado para refletir a estrutura correta
+  driver: Driver;
   origin: string;
   destination: string;
   distance: number;
@@ -27,14 +27,13 @@ const HistoricoDeViagens: React.FC = () => {
 
   const fetchRides = async () => {
     try {
-      // Corrigir a URL para enviar o customerId na URL e driverId como parâmetro de query
       const response = await axios.get(`http://localhost:8080/ride/${userId}`, {
         params: {
-          driver_id: driverId === 'todos' ? '' : driverId, // Se "todos", não envia o driver_id
+          driver_id: driverId === 'todos' ? '' : driverId,
         },
       });
 
-      setRides(response.data.rides); // Atualizando a lista de viagens com os dados recebidos
+      setRides(response.data.rides);
     } catch (error) {
       console.error('Erro ao buscar histórico:', error);
       alert('Erro ao buscar histórico de viagens. Tente novamente.');
@@ -46,7 +45,7 @@ const HistoricoDeViagens: React.FC = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <ErrorAlert message={error} onClose={() => setError('')} /> {/* Exibindo erros */}
+      <ErrorAlert message={error} onClose={() => setError('')} />
       <h1 className="text-2xl font-bold mb-4">Histórico de Viagens</h1>
       <div className="bg-white p-6 rounded shadow-md w-full max-w-md mb-6">
         <div className="mb-4">
@@ -92,7 +91,7 @@ const HistoricoDeViagens: React.FC = () => {
           rides.map((ride) => (
             <div key={ride.id} className="bg-white p-4 rounded shadow-md mb-4">
               <p className="font-bold">Data: {formatDate(ride.date)}</p>
-              <p><strong>Motorista:</strong> {ride.driver.name}</p> {/* Modificado para acessar o nome do motorista de 'driver' */}
+              <p><strong>Motorista:</strong> {ride.driver.name}</p>
               <p><strong>Origem:</strong> {ride.origin}</p>
               <p><strong>Destino:</strong> {ride.destination}</p>
               <p><strong>Distância:</strong> {ride.distance} km</p>
