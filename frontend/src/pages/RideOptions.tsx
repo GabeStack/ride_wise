@@ -15,15 +15,17 @@ const RideOptions: React.FC = () => {
     const destinationCoords: LatLngExpression = [destination.latitude, destination.longitude];
 
     const originIcon = new Icon({
-        iconUrl: '/path/to/origin-icon.png',
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png', // Caminho do ícone padrão do Leaflet
+        iconSize: [25, 41], // Tamanho do ícone padrão
+        iconAnchor: [12, 41], // Posição do ícone
+        popupAnchor: [1, -34], // Posição do popup
     });
 
     const destinationIcon = new Icon({
-        iconUrl: '/path/to/destination-icon.png',
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png', // Caminho do ícone padrão do Leaflet
+        iconSize: [25, 41], // Tamanho do ícone padrão
+        iconAnchor: [12, 41], // Posição do ícone
+        popupAnchor: [1, -34], // Posição do popup
     });
 
     // Função para confirmar a viagem
