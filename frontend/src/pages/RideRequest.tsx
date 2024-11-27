@@ -19,7 +19,7 @@ const RequestRide: React.FC = () => {
 
     try {
       // Fazer a requisição para estimativa
-      const response = await axios.post('http://localhost:3333/ride/estimate', {
+      const response = await axios.post('http://localhost:8080/ride/estimate', {
         customer_id: customerId,
         origin: originInput,
         destination: destinationInput,

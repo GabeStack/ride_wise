@@ -1,7 +1,9 @@
 {
   "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
-    "**/*"
+    "**/*",
+    "database/migrations/**/*.ts",
+    "database/seeders/**/*.ts"
   ],
   "exclude": [
     "node_modules",

@@ -25,9 +25,6 @@ WORKDIR /app
 # Copiar os arquivos compilados e dependências para o container final
 COPY --from=builder /app .
 
-# Copiar o arquivo .env para o container
-COPY .env .env
-
 # Expor a porta padrão do AdonisJS
 EXPOSE 3333
 

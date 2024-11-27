@@ -28,7 +28,7 @@ const HistoricoDeViagens: React.FC = () => {
   const fetchRides = async () => {
     try {
       // Corrigir a URL para enviar o customerId na URL e driverId como parâmetro de query
-      const response = await axios.get(`http://localhost:3333/ride/${userId}`, {
+      const response = await axios.get(`http://localhost:8080/ride/${userId}`, {
         params: {
           driver_id: driverId === 'todos' ? '' : driverId, // Se "todos", não envia o driver_id
         },

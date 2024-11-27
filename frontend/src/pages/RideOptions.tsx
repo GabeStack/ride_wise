@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ErrorAlert from '../components/errorAlert';
 import { useRequestRideStore } from '../hooks/useRequestRideStore'; // Alterado para importar a store correta
@@ -13,6 +13,18 @@ const RideOptions: React.FC = () => {
     const [error, setError] = useState('');
     const originCoords: LatLngExpression = [origin.latitude, origin.longitude];
     const destinationCoords: LatLngExpression = [destination.latitude, destination.longitude];
+
+    const originIcon = new Icon({
+        iconUrl: '/path/to/origin-icon.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+    });
+
+    const destinationIcon = new Icon({
+        iconUrl: '/path/to/destination-icon.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+    });
 
     // Função para confirmar a viagem
     const confirmRide = async (driverId: number) => {
@@ -37,7 +49,7 @@ const RideOptions: React.FC = () => {
                 value: selectedDriver.value,
             };
             console.log(rideData)
-            await axios.post('http://localhost:3333/ride/confirm', rideData);
+            await axios.post('http://localhost:8080/ride/confirm', rideData);
 
             window.location.href = '/historico';
         } catch (error) {
@@ -62,12 +74,12 @@ const RideOptions: React.FC = () => {
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                     {/* Marcador para Origem */}
-                    <Marker position={originCoords}>
+                    <Marker position={originCoords} icon={originIcon}>
                         <Popup>Origem</Popup>
                     </Marker>
 
                     {/* Marcador para Destino */}
-                    <Marker position={destinationCoords}>
+                    <Marker position={destinationCoords} icon={destinationIcon}>
                         <Popup>Destino</Popup>
                     </Marker>
                 </MapContainer>

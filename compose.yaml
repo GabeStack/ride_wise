@@ -18,17 +18,17 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      NODE_ENV: production
-      PG_HOST: db
-      PG_PORT: 5432
-      PG_USER: root
-      PG_PASSWORD: root123@
-      PG_DB_NAME: ride_wise
-      HOST: 0.0.0.0
-      PORT: 3333
-      APP_KEY: Xkl5IMqI2v9pLIb7HWRL7lzyRhjo15vD
-      DRIVE_DISK: local
-      API_GOOGLE: AIzaSyDOKFPvX5Idp1D6SgPrOME-Jh8RwSMzCBs
+      NODE_ENV: ${NODE_ENV}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DB_NAME: ${PG_DB_NAME}
+      API_GOOGLE: ${API_GOOGLE}
+      HOST: ${HOST}
+      PORT: ${PORT}
+      APP_KEY: ${APP_KEY}
+      DRIVE_DISK: ${DRIVE_DISK}
     ports:
       - "8080:3333"
     depends_on:
