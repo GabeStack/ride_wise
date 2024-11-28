@@ -5,7 +5,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copiar os arquivos de configuração e dependências
-COPY package.json package-lock.json ./
+COPY package.json  ./
 
 # Instalar dependências
 RUN npm install
