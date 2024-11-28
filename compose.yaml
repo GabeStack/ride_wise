@@ -24,7 +24,7 @@ services:
       PG_USER: ${PG_USER}
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DB_NAME: ${PG_DB_NAME}
-      API_GOOGLE: ${API_GOOGLE}
+      API_GOOGLE_KEY: ${API_GOOGLE_KEY}
       HOST: ${HOST}
       PORT: ${PORT}
       APP_KEY: ${APP_KEY}

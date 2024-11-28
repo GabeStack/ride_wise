@@ -24,7 +24,7 @@ export default class RidesController {
       })
     }
 
-    const apiKey = process.env.API_GOOGLE
+    const apiKey = process.env.API_GOOGLE_KEY
     const googleMapsUrl = `https://routes.googleapis.com/directions/v2:computeRoutes`
 
     try {
