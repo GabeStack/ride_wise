@@ -38,11 +38,11 @@ cd ride-wise
 ```bash
 - Para docker:
 
-docker-compose up --build 
+docker-compose up -d
 
 - Para Podman: 
 
-podman compose up
+podman compose up -d
 
 ```
 
